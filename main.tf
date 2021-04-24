@@ -12,7 +12,6 @@ terraform {
 provider "docker" {
   # config is in .ssh folder
   host = var.raspberry
-  #host = "ssh://sha@192.168.1.6:10563"
 }
 
 data "docker_registry_image" "busybox" {
