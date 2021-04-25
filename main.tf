@@ -1,5 +1,6 @@
 # TODO how to create pipeline and integrate CD / CI to this?
-
+# TODO split code in multiple files since it gets easily long
+# TODO understand module instruction
 terraform {
   required_providers {
     docker = {
@@ -14,48 +15,74 @@ provider "docker" {
 }
 
 # Start a container
-resource "docker_container" "ubuntu" {
-  name  = "foo"
+resource "docker_container" "nginx" {
+  name  = "nginx"
   image = docker_image.nginx.latest
   ports {
     internal = 80
   }
   volumes {
     container_path = "/usr/share/nginx/html"
-    host_path = "/data-nginx-test"
+    host_path = "/tmp"
     read_only = true
   }
 }
 
-# Find the latest Ubuntu precise image.
+# Find the latest nginx precise image.
 resource "docker_image" "nginx" {
   name = "nginx:1.11-alpine"
   keep_locally = true
 }
 
-#data "docker_registry_image" "hello-world" {
-#  name = "busybox:latest"
-#}
+resource "docker_container" "host1" {
+  image = docker_image.ubuntu.latest
+  name = "ubuntu-container-1"
+  attach = false
+  must_run = true
+  # publish_all_ports = true
+  # Exited (0) means program successfully completed. With docker you need to execute some long running commands
+  # to ensure it doesn't finish immediately.
+  # Best way to test some changes with docker, is waiting for nothing. Try this:
+  command = [
+    "tail", "-f", "/dev/null"
+  ]
+#  command = ["sleep", "2"]
+}
 
-#resource "docker_image" "hello-world" {
-# name = data.docker_registry_image.hello-world.name
-# pull_triggers = [
-#  data.docker_registry_image.hello-world.sha256_digest]
-#}
+data "docker_registry_image" "ubuntu" {
+  name = "ubuntu:18.04"
+}
 
-#resource "docker_container" "hello-world" {
-#  image    = docker_image.hello-world.latest
-# name     = "busybox"
-# restart  = "no"
+resource "docker_image" "ubuntu" {
+  name = data.docker_registry_image.ubuntu.name
+  # TODO what does it do?
+  pull_triggers = [data.docker_registry_image.ubuntu.sha256_digest]
+}
 
-#volumes {
-#  container_path = "/myapp2151"
-# replace the host_path with full path for your project directory starting from root directory /
-#host_path = "/prova2151"
-#  read_only = false
-# }
-#ports {
-#  internal = var.internal_port
-#  external = var.external_port
-# }
-# }
+resource "docker_volume" "portainer_data" {
+  name = "portainer_data"
+}
+resource "docker_container" "portainer-container" {
+  image = "portainer/portainer-ce"
+  name = "portainer-container"
+  restart = "always"
+  volumes {
+    container_path = "/var/run/docker.sock"
+    host_path = "/var/run/docker.sock"
+    read_only = false
+  }
+  mounts {
+    target = "/portainer_data"
+    source = docker_volume.portainer_data.name
+    type = "volume"
+    read_only = false
+  }
+  ports {
+    internal = 8000
+    external = 8000
+  }
+  ports {
+    internal = 9000
+    external = 9000
+  }
+}
