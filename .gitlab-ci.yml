@@ -1,6 +1,8 @@
 stages:
-  - prepare
+  - build-job
+  - test-job1
+  - test-job2
+  - deploy-prod
 
 include:
   - local: .test.gitlab-ci.yml
-  - local: .master.gitlab-ci.yml
