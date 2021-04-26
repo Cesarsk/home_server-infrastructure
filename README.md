@@ -8,4 +8,4 @@ Using Docker, Terraform, Raspberry
 - Runner needs to take certificate ssh key
 - Runner needs to Terraform the infrastructure, presumibly passed as .zip (?)
 - Complete stages in Pipeline (which stages?)
-
+- ...
