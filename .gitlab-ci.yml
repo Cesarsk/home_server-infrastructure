@@ -1,5 +1,6 @@
 stages:
-  - build
+  - pre-init
+  - init
 
 include:
   - local: .test.gitlab-ci.yml
