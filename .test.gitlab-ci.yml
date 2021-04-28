@@ -47,7 +47,7 @@ job 1:
     - mkdir .ssh
     - cd .ssh
     - cat $raspberry_key > raspberry_key
-    - cat $raspberry_config > config
+    - cp $raspberry_config > config
     - chmod 0600 raspberry_key
     - cd ..
 
