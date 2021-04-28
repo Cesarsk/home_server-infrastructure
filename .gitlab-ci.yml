@@ -2,8 +2,7 @@ image:
   name: hashicorp/terraform:light
 
 stages:
-  - pre-init
-  - init
+  - test
 
 include:
   - local: .test.gitlab-ci.yml

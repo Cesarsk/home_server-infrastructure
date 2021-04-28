@@ -1,4 +1,12 @@
-install-terraform:
+test:
+  stage: test
+  only:
+    refs:
+      - develop
+  script:
+    terraform -help
+
+pre-init:
   stage: pre-init
   only:
     refs:
@@ -18,7 +26,7 @@ install-terraform:
       #- ${ASSET_NAME}/${WORKSPACE}.tfplan
 
 validate:
-  stage: init
+  stage: validate
   script:
     - terraform init -input=false
     # - terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
