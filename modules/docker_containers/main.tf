@@ -1,4 +1,12 @@
 # Start a container
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+    }
+  }
+}
+
 resource "docker_container" "nginx" {
   name  = "nginx"
   image = docker_image.nginx.latest

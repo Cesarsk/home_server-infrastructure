@@ -16,10 +16,6 @@ provider "docker" {
 module "docker_containers" {
   source = "./modules/docker_containers"
 }
-
-
-
-
 //resource "docker_container" "host1" {
 //  image = docker_image.ubuntu.latest
 //  name = "ubuntu-container-1"
