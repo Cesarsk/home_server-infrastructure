@@ -44,7 +44,6 @@ job 1:
 
   before_script:
     - terraform --version
-    - chmod 0600 $raspberry_key
     - mkdir .ssh
     - cd .ssh
     - cp $raspberry_config config
