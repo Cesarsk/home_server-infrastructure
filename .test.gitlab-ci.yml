@@ -4,9 +4,15 @@ job 0:
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  stage: test
+  stage: prepare
   only:
     refs:
       - test
+  variables:
+    WORKSPACE: qual
+  before_script:
+    - terraform --version
   script:
-    terraform --version
+    - terraform init -input=false
+    - terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
+    - terraform validate -json
