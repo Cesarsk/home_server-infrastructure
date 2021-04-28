@@ -10,12 +10,11 @@ terraform {
 }
 
 provider "docker" {
-  host = var.device_local
+  host = var.raspberry_host
 }
 
 module "docker_containers" {
   source = "./modules/docker_containers"
-
 }
 
 

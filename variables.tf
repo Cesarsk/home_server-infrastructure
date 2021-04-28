@@ -1,7 +1,7 @@
-variable "device_local" {
+variable "raspberry_key" {
   type = string
 }
 
-variable "device_raspberry" {
+variable "raspberry_host" {
   type = string
 }

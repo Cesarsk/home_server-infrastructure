@@ -10,11 +10,13 @@ job 0:
       - test
   variables:
     WORKSPACE: qual
+    VARS_FILE: vars/vars.tfvars.json
+
   before_script:
     - terraform --version
   script:
     - echo "$VARIABLE_TEST"
     - echo "$VARIABLE_TEST_FILE"
-    #- terraform init -input=false
-    #- terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
-    #- terraform validate -json
+    - terraform init -input=false
+    - terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
+    - terraform validate -json

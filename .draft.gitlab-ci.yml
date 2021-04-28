@@ -5,7 +5,7 @@ pre-init:
     refs:
       - develop
   variables:
-    VARS_FILE: vars/apps.tfvars.json
+    VARS_FILE: vars/vars.tfvars.json
   before_script:
     #- cd ${ASSET_NAME}
   artifacts:
