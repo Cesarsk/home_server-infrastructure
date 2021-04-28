@@ -4,6 +4,6 @@ job 0:
   stage: test
   only:
     refs:
-      - develop
+      - test
   script:
     terraform -help
