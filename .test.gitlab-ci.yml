@@ -46,9 +46,9 @@ job 1:
     - terraform --version
     - chmod 0600 $raspberry_key
     - mkdir .ssh
-    - cp $raspberry_config .ssh/config
-    - ls .ssh/
-    - cat .ssh/config
+    - cd .ssh
+    - cp $raspberry_config config
+    - cat config
 
   script:
     - terraform init -input=false
