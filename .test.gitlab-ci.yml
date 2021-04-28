@@ -1,4 +1,5 @@
 install-terraform:
+  image: hashicorp/terraform
   stage: pre-init
   only:
     refs:
