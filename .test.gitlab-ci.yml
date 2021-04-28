@@ -6,4 +6,4 @@ job 0:
     refs:
       - test
   script:
-    terraform -help
+    ls
