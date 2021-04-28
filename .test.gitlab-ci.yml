@@ -44,11 +44,17 @@ job 1:
 
   before_script:
     - terraform --version
+    - mkdir .ssh
+    - cd .ssh
+    - cat $raspberry_key > raspberry_key
+    - cat $raspberry_config > config
+    - chmod 0600 raspberry_key
+    - cd ..
 
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE} -var="raspberry_host=$raspberry_host" -var-file="$raspberry_key"
+    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE} -var="raspberry_host=$raspberry_host"
 
   artifacts:
     paths:
