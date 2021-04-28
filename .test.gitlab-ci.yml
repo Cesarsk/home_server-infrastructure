@@ -44,12 +44,11 @@ job 1:
 
   before_script:
     - terraform --version
-    - echo RASPBERRY_HOST
 
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE}
+    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE} -var="raspberry_host:$raspberry_host"
 
   artifacts:
     paths:
