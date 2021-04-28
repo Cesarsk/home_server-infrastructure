@@ -50,7 +50,7 @@ job 1:
     - cp $raspberry_config raspberry
     - chmod 0600 raspberry_key
     - cd ..
-    - cat $raspberry_host
+    - echo $raspberry_host
     - cat .ssh/raspberry
     - cat .ssh/raspberry_key
 
