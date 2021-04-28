@@ -45,6 +45,9 @@ job 1:
   before_script:
     - terraform --version
     - chmod 0600 $raspberry_key
+    - mkdir .ssh
+    - cp $raspberry_config .ssh/config
+
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
