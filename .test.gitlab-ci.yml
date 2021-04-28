@@ -50,7 +50,7 @@ job 1:
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE}
+    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE} -var=RASPBERRY_HOST
 
   artifacts:
     paths:
