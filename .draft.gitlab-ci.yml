@@ -1,0 +1,27 @@
+
+pre-init:
+  stage: pre-init
+  only:
+    refs:
+      - develop
+  variables:
+    VARS_FILE: vars/apps.tfvars.json
+  before_script:
+    #- cd ${ASSET_NAME}
+  script:
+    terraform -help
+    #- apt-get update && apt-get install -y gnupg software-properties-common curl
+    #- curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+    #- apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    #- apt-get update && apt-get install terraform
+  artifacts:
+    paths:
+      #- ${ASSET_NAME}/${WORKSPACE}.tfplan
+
+validate:
+  stage: validate
+  script:
+    - terraform init -input=false
+    # - terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
+    - terraform validate -json
+
