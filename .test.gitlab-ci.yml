@@ -18,5 +18,5 @@ job 0:
     - echo "$VARIABLE_TEST"
     - echo "$VARIABLE_TEST_FILE"
     - terraform init -input=false -var-file=${VARS_FILE}
-    - terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
+    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
     - terraform validate -json
