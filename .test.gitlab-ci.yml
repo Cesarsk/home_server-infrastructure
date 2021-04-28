@@ -49,6 +49,7 @@ job 1:
     - cp $raspberry_key raspberry_key
     - chmod 0600 raspberry_key
     - cat $raspberry_config
+    - cd ..
 
   script:
     - terraform init -input=false
