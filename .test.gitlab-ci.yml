@@ -1,4 +1,6 @@
-test:
+job 0:
+  image:
+    name: hashicorp/terraform:light
   stage: test
   only:
     refs:
