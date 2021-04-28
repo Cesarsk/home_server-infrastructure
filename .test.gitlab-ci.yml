@@ -13,7 +13,7 @@ job 0:
   before_script:
     - terraform --version
   script:
-    - ssh
+    - echo "$raspberry_host"
     #- terraform init -input=false
     #- terraform workspace select ${WORKSPACE} || terraform workspace new ${WORKSPACE}
     #- terraform validate -json
