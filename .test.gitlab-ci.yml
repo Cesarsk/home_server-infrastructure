@@ -1,5 +1,5 @@
 install-terraform:
-  image: hashicorp/terraform
+  image: hub.docker.com/r/hashicorp/terraform:latest
   stage: pre-init
   only:
     refs:
