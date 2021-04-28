@@ -46,7 +46,7 @@ job 1:
     - terraform --version
     - mkdir .ssh
     - cd .ssh
-    - cp $raspberry_config config
+    - cat $raspberry_config
 
   script:
     - terraform init -input=false
