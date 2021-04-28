@@ -41,10 +41,11 @@ job 1:
   variables:
     WORKSPACE: qual
     VARS_FILE: vars/vars.tfvars.json
-    RASPBERRY_HOST: ${raspberry_host}
+    RASPBERRY_HOST: "$raspberry_host"
 
   before_script:
     - terraform --version
+    - echo RASPBERRY_HOST
 
   script:
     - terraform init -input=false
