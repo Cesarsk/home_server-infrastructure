@@ -4,19 +4,52 @@ job 0:
     entrypoint:
       - '/usr/bin/env'
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  stage: prepare
+
+  stage: validate
+
   only:
     refs:
       - test
+
   variables:
     WORKSPACE: qual
     VARS_FILE: vars/vars.tfvars.json
 
   before_script:
     - terraform --version
+
   script:
     - echo "$VARIABLE_TEST"
     - echo "$VARIABLE_TEST_FILE"
     - terraform init -input=false -var-file=${VARS_FILE}
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
     - terraform validate -json
+
+job 1:
+  image:
+    name: hashicorp/terraform:light
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+  stage: plan
+
+  only:
+    refs:
+      - test
+
+  variables:
+    WORKSPACE: qual
+    VARS_FILE: vars/vars.tfvars.json
+
+  before_script:
+    - terraform --version
+
+  script:
+    - terraform init -input=false
+    - terraform workspace select ${WORKSPACE}
+    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var-file=${VARS_FILE}
+
+  artifacts:
+    paths:
+      - ${WORKSPACE}.tfplan

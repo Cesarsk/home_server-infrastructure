@@ -1,5 +1,6 @@
 stages:
-  - prepare
+  - validate
+  - plan
 
 include:
   - local: .test.gitlab-ci.yml
