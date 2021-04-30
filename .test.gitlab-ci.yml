@@ -46,13 +46,10 @@ job 1:
     - terraform --version
     - mkdir .ssh
     - cd .ssh
+    - eval `ssh-agent -s`
     - cp $raspberry_key raspberry_key
-    - cp $raspberry_config raspberry
     - chmod 0600 raspberry_key
-    - cd ..
-    - echo $raspberry_host
-    - cat .ssh/raspberry
-    - cat .ssh/raspberry_key
+    - ssh-add -k raspberry_key
 
   script:
     - terraform init -input=false
