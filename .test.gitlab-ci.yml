@@ -45,7 +45,6 @@ job 1:
   before_script:
     - terraform --version
     - mkdir .ssh
-    - cd .ssh
     - eval `ssh-agent -s`
     - cp $raspberry_key raspberry_key
     - chmod 0600 raspberry_key
