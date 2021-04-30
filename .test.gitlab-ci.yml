@@ -50,7 +50,7 @@ job 1:
     - cp $raspberry_key ~/.ssh/raspberry_key
     - cat ~/.ssh/config
     - ls ~/.ssh
-    - chmod 0600 .ssh/raspberry_key
+    - chmod 0600 ~/.ssh/raspberry_key
  #   - ssh-add -k raspberry_key
 
   script:
