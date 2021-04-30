@@ -88,4 +88,4 @@ job 2:
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform apply -input=false -auto-approve -lock=false ${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    - terraform apply -input=false -auto-approve -lock=false -compact-warnings ${WORKSPACE}.tfplan state=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
