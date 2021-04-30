@@ -72,11 +72,11 @@ job 2:
   only:
     refs:
       - test
-      -
+
   variables:
     WORKSPACE: qual
 
   script:
     - terraform init -input=false
     - terraform workspace select ${WORKSPACE}
-    - terraform apply -input=false -auto-approve -compact-warnings ${WORKSPACE}.tfplan
+    - terraform apply -input=false -auto-approve -compact-warnings ${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
