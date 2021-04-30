@@ -9,13 +9,24 @@ terraform {
   }
 }
 
+
+# Configure the Docker provider
 provider "docker" {
   host = var.raspberry_host
+  #host = "tcp://127.0.0.1:2375"
 }
 
-module "docker_containers" {
-  source = "./modules/docker_containers"
+# create db container
+resource "docker_container" "db" {
+  name  = "db_test"
+  image = "mysql:5.7"
+  restart = "always"
 }
+
+#module "docker_containers" {
+#  source = "./modules/docker_containers"
+#}
+
 //resource "docker_container" "host1" {
 //  image = docker_image.ubuntu.latest
 //  name = "ubuntu-container-1"
