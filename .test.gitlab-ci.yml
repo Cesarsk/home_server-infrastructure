@@ -56,8 +56,8 @@ job 1:
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - ssh ssh://raspberry "touch dio.txt && exit"
-    #- terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    #- ssh ssh://raspberry "touch dio.txt && exit"
+    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
 
   artifacts:
     paths:
