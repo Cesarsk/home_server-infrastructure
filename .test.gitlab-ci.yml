@@ -53,9 +53,7 @@ job 1:
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - ssh $raspberry_host
-    - touch cisiamo.txt
-    - exit
+    - ssh $raspberry_host "touch cisiamo.txt & exit"
    # - terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
 
   artifacts:
