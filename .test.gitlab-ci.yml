@@ -76,6 +76,15 @@ job 2:
   variables:
     WORKSPACE: qual
 
+  before_script:
+    - terraform --version
+    - mkdir ~/.ssh
+    - cp $raspberry_config ~/.ssh/config
+    - cp $raspberry_key ~/.ssh/raspberry_key
+    - cat ~/.ssh/config
+    - ls ~/.ssh
+    - chmod 0600 ~/.ssh/raspberry_key
+
   script:
     - terraform init -input=false
     - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
