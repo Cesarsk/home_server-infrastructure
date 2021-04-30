@@ -44,12 +44,12 @@ job 1:
 
   before_script:
     - terraform --version
-    - mkdir .ssh
+    - mkdir ~/.ssh
  #   - eval `ssh-agent -s`
-    - cp $raspberry_config .ssh/config
-    - cp $raspberry_key .ssh/raspberry_key
-    - cat .ssh/config
-    - ls .ssh
+    - cp $raspberry_config ~/.ssh/config
+    - cp $raspberry_key ~/.ssh/raspberry_key
+    - cat ~/.ssh/config
+    - ls ~/.ssh
     - chmod 0600 .ssh/raspberry_key
  #   - ssh-add -k raspberry_key
 
