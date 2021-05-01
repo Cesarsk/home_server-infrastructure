@@ -7,21 +7,15 @@ terraform {
   }
 }
 
-resource "docker_container" "nginx" {
-  name  = "nginx"
-  image = docker_image.nginx.latest
-  ports {
-    internal = 80
-  }
-  volumes {
-    container_path = "/usr/share/nginx/html"
-    host_path = "/tmp"
-    read_only = true
-  }
+resource "docker_image" "db_image" {
+  name = "biarms/mysql:latest"
 }
 
-# Find the latest nginx precise image.
-resource "docker_image" "nginx" {
-  name = "nginx:1.11-alpine"
-  keep_locally = true
+
+
+# create db container
+resource "docker_container" "db" {
+  name  = "db_test"
+  image = docker_image.db_image.latest
+  restart = "always"
 }
