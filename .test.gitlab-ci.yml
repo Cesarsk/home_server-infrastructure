@@ -33,6 +33,8 @@ job 1:
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
   stage: plan
+  needs:
+    - job 0
 
   only:
     refs:
@@ -68,6 +70,9 @@ job 2:
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
   stage: apply
+
+  needs:
+    - job 1
 
   only:
     refs:
