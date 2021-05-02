@@ -32,9 +32,9 @@ job 0:
   script:
     - echo "$VARIABLE_TEST"
     - echo "$VARIABLE_TEST_FILE"
-    - terraform init -input=false -var-file=${VARS_FILE}
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform validate -json
+    - gitlab-terraform init -input=false -var-file=${VARS_FILE}
+    - gitlab-terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
+    - gitlab-terraform validate -json
 
 job 1:
   when: manual
