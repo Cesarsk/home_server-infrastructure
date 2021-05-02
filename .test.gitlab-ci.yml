@@ -22,7 +22,7 @@ init:
     - terraform --version
 
   script:
-    - gitlab-terraform init -input=false -var-file=${VARS_FILE}
+    - gitlab-terraform init -var-file=${VARS_FILE}
     - gitlab-terraform validate -json
 
 plan:
@@ -50,7 +50,7 @@ plan:
     name: plan
     paths:
       - ${TF_ROOT}/plan.cache
-      - ${WORKSPACE}.tfplan
+
     reports:
       terraform: ${TF_ROOT}/plan.json
 
@@ -68,7 +68,7 @@ apply:
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
-    #- chmod 0600 ~/.ssh/raspberry_key
+    - chmod 0600 ~/.ssh/raspberry_key
 
   script:
     - gitlab-terraform apply
