@@ -37,15 +37,9 @@ job 0:
     - gitlab-terraform validate -json
 
 job 1:
-  when: manual
-  image:
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
   stage: plan
-  needs:
+  dependencies:
     - job 0
 
   only:
@@ -66,13 +60,18 @@ job 1:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - terraform init -input=false
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    #- gitlab-terraform init -input=false
+    #- gitlab-terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
+    - gitlab-terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    - gitlab-terraform plan-json
 
   artifacts:
+    name: plan
     paths:
+      - ${TF_ROOT}/plan.cache
       - ${WORKSPACE}.tfplan
+    reports:
+      terraform: ${TF_ROOT}/plan.json
 
 job 2:
   image:
@@ -83,7 +82,7 @@ job 2:
 
   stage: apply
 
-  needs:
+  dependencies:
     - job 1
 
   only:
