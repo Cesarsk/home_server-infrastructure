@@ -12,7 +12,6 @@ cache:
     - ${TF_ROOT}/.terraform
 
 init:
-
   stage: init
 
   only:
@@ -27,7 +26,6 @@ init:
     - gitlab-terraform validate -json
 
 plan:
-
   stage: plan
 
   dependencies:
