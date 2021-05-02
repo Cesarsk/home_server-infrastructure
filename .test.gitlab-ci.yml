@@ -74,12 +74,6 @@ job 1:
       terraform: ${TF_ROOT}/plan.json
 
 job 2:
-  image:
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
   stage: apply
 
   dependencies:
@@ -102,6 +96,6 @@ job 2:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - terraform init -input=false
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform apply -input=false -auto-approve -compact-warnings ${WORKSPACE}.tfplan
+    #- terraform init -input=false
+    #- terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
+    - gitlab-terraform apply -input=false -auto-approve -compact-warnings ${WORKSPACE}.tfplan
