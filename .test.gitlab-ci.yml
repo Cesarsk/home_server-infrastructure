@@ -33,7 +33,7 @@ job 0:
     - echo "$VARIABLE_TEST"
     - echo "$VARIABLE_TEST_FILE"
     - gitlab-terraform init -input=false -var-file=${VARS_FILE}
-    - gitlab-terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
+    - gitlab-terraform workspace new ${WORKSPACE} || gitlab-terraform workspace select ${WORKSPACE}
     - gitlab-terraform validate -json
 
 job 1:
