@@ -1,6 +1,7 @@
 # TODO pull image docker automatically
 
 terraform {
+  backend "http" {}
   required_providers {
     docker = {
       source = "kreuzwerker/docker"
