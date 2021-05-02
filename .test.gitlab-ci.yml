@@ -64,11 +64,11 @@ apply:
     refs:
       - test
 
-  before_script:
-    - mkdir ~/.ssh
-    - cp $raspberry_config ~/.ssh/config
-    - cp $raspberry_key ~/.ssh/raspberry_key
-    - chmod 0600 ~/.ssh/raspberry_key
+  #before_script:
+   # - mkdir ~/.ssh
+    #- cp $raspberry_config ~/.ssh/config
+    #- cp $raspberry_key ~/.ssh/raspberry_key
+    #- chmod 0600 ~/.ssh/raspberry_key
 
   script:
     - gitlab-terraform apply
