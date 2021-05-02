@@ -18,3 +18,4 @@ Using Docker, Terraform, Raspberry
 - Pipeline for Main branch? (Connected to Major: split qual and prod environments)
 - Refactor project's folders
 - Protect Variables on Gitlab and ensure security is enforced
+- Manage plan of Terraform in CI/CD
