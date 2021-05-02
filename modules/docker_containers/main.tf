@@ -15,7 +15,7 @@ resource "docker_image" "db_image" {
 
 # create db container
 resource "docker_container" "db" {
-  name  = format("%s/%s", "db", uuid())
+  name  = format("%s-%s", "mysql", uuid())
   image = docker_image.db_image.latest
   restart = "always"
 }
