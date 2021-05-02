@@ -39,6 +39,7 @@ job 0:
 job 1:
 
   stage: plan
+
   dependencies:
     - job 0
 
