@@ -3,67 +3,49 @@ image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}
+  WORKSPACE: qual
+  VARS_FILE: vars/vars.tfvars.json
 
 cache:
   key: example-production
   paths:
     - ${TF_ROOT}/.terraform
 
-job 0:
-  #image:
-    #name: hashicorp/terraform:light
-    #entrypoint:
-      #- '/usr/bin/env'
-      #- 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+init:
 
-  stage: validate
+  stage: init
 
   only:
     refs:
       - test
-
-  variables:
-    WORKSPACE: qual
-    VARS_FILE: vars/vars.tfvars.json
 
   before_script:
     - terraform --version
 
   script:
-    - echo "$VARIABLE_TEST"
-    - echo "$VARIABLE_TEST_FILE"
     - gitlab-terraform init -input=false -var-file=${VARS_FILE}
-    #- gitlab-terraform workspace new ${WORKSPACE} || gitlab-terraform workspace select ${WORKSPACE}
     - gitlab-terraform validate -json
 
-job 1:
+plan:
 
   stage: plan
 
   dependencies:
-    - job 0
+    - init
 
   only:
     refs:
       - test
-
-  variables:
-    WORKSPACE: qual
-    VARS_FILE: vars/vars.tfvars.json
 
   before_script:
     - terraform --version
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
-    - cat ~/.ssh/config
-    - ls ~/.ssh
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    #- gitlab-terraform init -input=false
-    #- gitlab-terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - gitlab-terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host"
     - gitlab-terraform plan-json
 
   artifacts:
@@ -74,29 +56,21 @@ job 1:
     reports:
       terraform: ${TF_ROOT}/plan.json
 
-job 2:
+apply:
   stage: apply
 
   dependencies:
-    - job 1
+    - plan
 
   only:
     refs:
       - test
 
-  variables:
-    WORKSPACE: qual
-
   before_script:
-    - terraform --version
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
-    - cat ~/.ssh/config
-    - ls ~/.ssh
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    #- terraform init -input=false
-    #- terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
     - gitlab-terraform apply
