@@ -7,10 +7,11 @@ variables:
   VARS_FILE: vars/vars.tfvars.json
 
 cache:
-  key: example-production
+  key: ${WORKSPACE}
   paths:
     - ${TF_ROOT}/.terraform
 
+##########################################################
 init:
   stage: init
 
@@ -25,6 +26,7 @@ init:
     - gitlab-terraform init -var-file=${VARS_FILE}
     - gitlab-terraform validate -json
 
+##########################################################
 plan:
   stage: plan
 
@@ -54,6 +56,7 @@ plan:
     reports:
       terraform: ${TF_ROOT}/plan.json
 
+##########################################################
 apply:
   stage: apply
 
