@@ -1,4 +1,4 @@
-image: registry.gitlab.com/gitlab-org/terraform-images/stable:latags
+image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
@@ -17,7 +17,7 @@ init:
 
   only:
     refs:
-      - tags
+      - test
 
   before_script:
     - terraform --version
@@ -35,7 +35,7 @@ plan:
 
   only:
     refs:
-      - tags
+      - test
 
   before_script:
     - terraform --version
@@ -65,7 +65,7 @@ apply:
 
   only:
     refs:
-      - tags
+      - test
 
   before_script:
     - mkdir ~/.ssh
