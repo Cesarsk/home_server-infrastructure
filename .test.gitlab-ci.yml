@@ -16,7 +16,7 @@ init:
 
   only:
     refs:
-      - test
+      - tags
 
   before_script:
     - terraform --version
@@ -33,7 +33,7 @@ plan:
 
   only:
     refs:
-      - test
+      - tags
 
   before_script:
     - terraform --version
@@ -62,7 +62,7 @@ apply:
 
   only:
     refs:
-      - test
+      - tags
 
   before_script:
     - mkdir ~/.ssh
