@@ -7,7 +7,7 @@ variables:
   VARS_FILE: vars/vars.tfvars.json
 
 cache:
-  key: example
+  key: ${WORKSPACE}
   paths:
     - ${TF_ROOT}/.terraform
 
