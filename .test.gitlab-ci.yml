@@ -31,7 +31,7 @@ qual:plan:
   stage: plan
 
   dependencies:
-    - init
+    - qual:init
 
   only:
     refs:
@@ -61,7 +61,7 @@ qual:apply:
   stage: apply
 
   dependencies:
-    - plan
+    - qual:plan
 
   only:
     refs:

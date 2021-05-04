@@ -31,7 +31,7 @@ prod:plan:
   stage: plan
 
   dependencies:
-    - init
+    - prod:init
 
   only:
     refs:
@@ -61,7 +61,7 @@ prod:apply:
   stage: apply
 
   dependencies:
-    - plan
+    - prod:plan
 
   when: manual
 
