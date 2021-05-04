@@ -1,0 +1,27 @@
+image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
+  WORKSPACE: prod
+  VARS_FILE: vars/vars.tfvars.json
+
+cache:
+  key: example
+  paths:
+    - ${TF_ROOT}/.terraform
+
+##########################################################
+init:
+  stage: init
+
+  only:
+    refs:
+      - test
+
+  before_script:
+    - terraform --version
+
+  script:
+    - gitlab-terraform init -var-file=${VARS_FILE}
+    - gitlab-terraform validate -json
