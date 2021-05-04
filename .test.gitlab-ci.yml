@@ -45,7 +45,7 @@ plan:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host"
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
     - gitlab-terraform plan-json
 
   artifacts:
