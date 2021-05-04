@@ -23,7 +23,7 @@ init:
     - terraform --version
     - terraform --help
     - gitlab-terraform --help
-#    - terraform workspace new ciao
+    - terraform workspace new ${WORKSPACE}
 
   script:
     - gitlab-terraform init -var-file=${VARS_FILE}
