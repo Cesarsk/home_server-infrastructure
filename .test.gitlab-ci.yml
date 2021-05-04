@@ -12,7 +12,7 @@ cache:
     - ${TF_ROOT}/.terraform
 
 ###########################################################
-init:
+qual:init:
   stage: init
 
   only:
@@ -27,7 +27,7 @@ init:
     - gitlab-terraform validate -json
 
 ###########################################################
-plan:
+qual:plan:
   stage: plan
 
   dependencies:
@@ -57,7 +57,7 @@ plan:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
 ###########################################################
-apply:
+qual:apply:
   stage: apply
 
   dependencies:
