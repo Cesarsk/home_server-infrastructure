@@ -11,7 +11,7 @@ cache:
   paths:
     - ${TF_ROOT}/.terraform
 
-##########################################################
+###########################################################
 init:
   stage: init
 
@@ -26,7 +26,7 @@ init:
     - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
     - gitlab-terraform validate -json
 
-##########################################################
+###########################################################
 plan:
   stage: plan
 
@@ -56,7 +56,7 @@ plan:
     reports:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
-##########################################################
+###########################################################
 apply:
   stage: apply
 
