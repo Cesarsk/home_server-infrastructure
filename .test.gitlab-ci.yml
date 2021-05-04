@@ -21,12 +21,9 @@ init:
 
   before_script:
     - terraform --version
-    - terraform --help
-    - gitlab-terraform --help
-    - terraform workspace new ${WORKSPACE}
 
   script:
-    - gitlab-terraform init -var-file=${VARS_FILE}
+    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
     - gitlab-terraform validate -json
 
 ##########################################################
