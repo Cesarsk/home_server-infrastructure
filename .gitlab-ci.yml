@@ -5,3 +5,4 @@ stages:
 
 include:
   - local: .test.gitlab-ci.yml
+  - local: .master.gitlab-ci.yml
