@@ -1,0 +1,79 @@
+image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
+  WORKSPACE: prod
+  VARS_FILE: vars/vars.tfvars.json
+
+cache:
+  key: ${WORKSPACE}
+  paths:
+    - ${TF_ROOT}/.terraform
+
+#########################################################
+prod:init:
+  stage: init
+
+  only:
+    refs:
+      - master
+
+  before_script:
+    - terraform --version
+
+  script:
+    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
+    - gitlab-terraform validate -json
+
+###########################################################
+prod:plan:
+  stage: plan
+
+  dependencies:
+    - prod:init
+
+  only:
+    refs:
+      - master
+
+  before_script:
+    - terraform --version
+    - mkdir ~/.ssh
+    - cp $raspberry_config ~/.ssh/config
+    - cp $raspberry_key ~/.ssh/raspberry_key
+    - chmod 0600 ~/.ssh/raspberry_key
+
+  script:
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan-json
+
+  artifacts:
+    name: plan
+    paths:
+      - ${TF_ROOT}/plan.cache
+
+    reports:
+      terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
+
+###########################################################
+prod:apply:
+  stage: apply
+
+  dependencies:
+    - prod:plan
+
+  when: manual
+
+  only:
+    refs:
+      - master
+
+  before_script:
+    - mkdir ~/.ssh
+    - cp $raspberry_config ~/.ssh/config
+    - cp $raspberry_key ~/.ssh/raspberry_key
+    - chmod 0600 ~/.ssh/raspberry_key
+
+  script:
+    - gitlab-terraform apply

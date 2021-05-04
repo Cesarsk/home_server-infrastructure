@@ -1,96 +1,77 @@
-job 0:
-  image:
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 
-  stage: validate
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}
+  TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
+  WORKSPACE: qual
+  VARS_FILE: vars/vars.tfvars.json
+
+cache:
+  key: ${WORKSPACE}
+  paths:
+    - ${TF_ROOT}/.terraform
+
+###########################################################
+qual:init:
+  stage: init
 
   only:
     refs:
       - test
-
-  variables:
-    WORKSPACE: qual
-    VARS_FILE: vars/vars.tfvars.json
 
   before_script:
     - terraform --version
 
   script:
-    - echo "$VARIABLE_TEST"
-    - echo "$VARIABLE_TEST_FILE"
-    - terraform init -input=false -var-file=${VARS_FILE}
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform validate -json
+    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
+    - gitlab-terraform validate -json
 
-job 1:
-  image:
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
+###########################################################
+qual:plan:
   stage: plan
-  needs:
-    - job 0
+
+  dependencies:
+    - qual:init
 
   only:
     refs:
       - test
-
-  variables:
-    WORKSPACE: qual
-    VARS_FILE: vars/vars.tfvars.json
 
   before_script:
     - terraform --version
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
-    - cat ~/.ssh/config
-    - ls ~/.ssh
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - terraform init -input=false
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform plan -input=false -out=${WORKSPACE}.tfplan -var="raspberry_host=$raspberry_host"
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan-json
 
   artifacts:
+    name: plan
     paths:
-      - ${WORKSPACE}.tfplan
+      - ${TF_ROOT}/plan.cache
 
-job 2:
-  image:
-    name: hashicorp/terraform:light
-    entrypoint:
-      - '/usr/bin/env'
-      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    reports:
+      terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
+###########################################################
+qual:apply:
   stage: apply
 
-  needs:
-    - job 1
+  dependencies:
+    - qual:plan
 
   only:
     refs:
       - test
 
-  variables:
-    WORKSPACE: qual
-
   before_script:
-    - terraform --version
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
-    - cat ~/.ssh/config
-    - ls ~/.ssh
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - terraform init -input=false
-    - terraform workspace new ${WORKSPACE} || terraform workspace select ${WORKSPACE}
-    - terraform apply -input=false -auto-approve -compact-warnings ${WORKSPACE}.tfplan
+    - gitlab-terraform apply
