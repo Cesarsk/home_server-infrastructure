@@ -17,7 +17,7 @@ prod:init:
 
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - terraform --version
@@ -35,7 +35,7 @@ prod:plan:
 
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - terraform --version
@@ -67,7 +67,7 @@ prod:apply:
 
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - mkdir ~/.ssh
