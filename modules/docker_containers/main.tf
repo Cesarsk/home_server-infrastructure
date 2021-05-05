@@ -13,7 +13,8 @@ resource "docker_image" "db_image" {
 
 # create db container
 resource "docker_container" "db" {
-  name    = "${var.workspace}-mysql-${uuid()}"
+  #  name    = "${var.workspace}-mysql-${uuid()}"
+  name    = "${var.workspace}-mysql"
   image   = docker_image.db_image.latest
   restart = "always"
 }
