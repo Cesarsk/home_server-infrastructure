@@ -3,7 +3,6 @@ image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
-  WORKSPACE: prod
   VARS_FILE: vars/vars.tfvars.json
 
 cache:
@@ -15,9 +14,12 @@ cache:
 prod:init:
   stage: init
 
+  variables:
+    WORKSPACE: prod
+
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - terraform --version
@@ -33,9 +35,12 @@ prod:plan:
   dependencies:
     - prod:init
 
+  variables:
+    WORKSPACE: prod
+
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - terraform --version
@@ -63,11 +68,14 @@ prod:apply:
   dependencies:
     - prod:plan
 
+  variables:
+    WORKSPACE: prod
+
   when: manual
 
   only:
     refs:
-      - master
+      - main
 
   before_script:
     - mkdir ~/.ssh
