@@ -12,7 +12,12 @@ provider "docker" {
   host = var.raspberry_host
 }
 
-module "docker_containers" {
-  source    = "./modules/docker_containers/"
+module "mysql" {
+  source    = "./modules/docker_containers/mysql"
+  workspace = var.workspace
+}
+
+module "portainer" {
+  source    = "./modules/docker_containers/portainer"
   workspace = var.workspace
 }
