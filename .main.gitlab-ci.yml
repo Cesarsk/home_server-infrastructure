@@ -61,7 +61,7 @@ prod:plan:
     reports:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
-##########################################################
+#########################################################
 prod:apply:
   stage: apply
 
