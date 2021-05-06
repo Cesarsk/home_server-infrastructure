@@ -1,5 +1,3 @@
-# TODO pull image docker automatically
-
 terraform {
   backend "http" {}
   required_providers {
@@ -15,7 +13,6 @@ provider "docker" {
 }
 
 module "docker_containers" {
-  source    = "./modules/docker_containers"
+  source    = "./modules/docker_containers/"
   workspace = var.workspace
 }
-
