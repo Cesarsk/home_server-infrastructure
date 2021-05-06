@@ -4,5 +4,5 @@ stages:
   - apply
 
 include:
-  - local: .test.gitlab-ci.yml
-  - local: .main.gitlab-ci.yml
+  - local: pipelines/.test.gitlab-ci.yml
+  - local: pipelines/.main.gitlab-ci.yml

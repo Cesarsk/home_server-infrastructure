@@ -3,23 +3,22 @@ image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
-  VARS_FILE: vars/vars.tfvars.json
 
 cache:
   key: ${WORKSPACE}
   paths:
     - ${TF_ROOT}/.terraform
 
-##########################################################
-qual:init:
+########################################################
+prod:init:
   stage: init
+
+  variables:
+    WORKSPACE: prod
 
   only:
     refs:
-      - test
-
-  variables:
-    WORKSPACE: qual
+      - main
 
   before_script:
     - terraform --version
@@ -29,21 +28,21 @@ qual:init:
     - gitlab-terraform validate -json
 
 ###########################################################
-qual:plan:
+prod:plan:
   stage: plan
 
   dependencies:
-    - qual:init
+    - prod:init
 
   variables:
-    WORKSPACE: qual
+    WORKSPACE: prod
 
   only:
     refs:
-      - test
+      - main
 
   before_script:
-    - terraform --version
+    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
@@ -61,21 +60,24 @@ qual:plan:
     reports:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
-###########################################################
-qual:apply:
+######################################################
+prod:apply:
   stage: apply
 
   dependencies:
-    - qual:plan
+    - prod:plan
 
   variables:
-    WORKSPACE: qual
+    WORKSPACE: prod
+
+  when: manual
 
   only:
     refs:
-      - test
+      - main
 
   before_script:
+    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key

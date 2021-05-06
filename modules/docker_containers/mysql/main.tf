@@ -22,4 +22,8 @@ resource "docker_container" "mysql" {
   name    = "${var.workspace}-mysql"
   image   = docker_image.mysql_image.latest
   restart = "always"
+  #ports {
+  #  internal = var.mysql_internal_port_1
+  #  external = var.mysql_external_port_1
+  #}
 }
