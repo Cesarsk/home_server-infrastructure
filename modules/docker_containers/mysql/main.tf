@@ -8,7 +8,8 @@ terraform {
 }
 
 resource "docker_image" "db_image" {
-  name = "biarms/mysql:latest"
+  name         = "biarms/mysql:latest"
+  keep_locally = true
 }
 
 # create db container
