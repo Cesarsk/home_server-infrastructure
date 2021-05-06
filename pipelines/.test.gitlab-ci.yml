@@ -76,6 +76,7 @@ qual:apply:
       - test
 
   before_script:
+    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
