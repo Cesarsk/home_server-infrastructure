@@ -7,8 +7,12 @@ terraform {
   }
 }
 
+data "docker_registry_image" "mysql" {
+  name = "biarms/mysql:latest"
+}
+
 resource "docker_image" "db_image" {
-  name         = "biarms/mysql:latest"
+  name         = data.docker_registry_image.mysql.name
   keep_locally = true
 }
 
