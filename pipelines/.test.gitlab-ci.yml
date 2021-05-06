@@ -1,7 +1,7 @@
 image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 
 variables:
-  TF_ROOT: ${CI_PROJECT_DIR}
+  TF_ROOT: modules
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
 
 cache:
@@ -76,7 +76,6 @@ qual:apply:
       - test
 
   before_script:
-    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
