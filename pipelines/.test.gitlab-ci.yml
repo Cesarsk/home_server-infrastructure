@@ -23,7 +23,7 @@ qual:init:
 
   before_script:
     - terraform --version
-    - unzip -P ${PASSPHRASE} vars.zip
+    - gpg --passphrase ${PASSPHRASE} vars.gpg
 
   script:
     - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
