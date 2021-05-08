@@ -3,6 +3,7 @@ image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
+  VARS_FILE: ./vars/vars.json
 
 cache:
   key: ${WORKSPACE}
@@ -21,7 +22,9 @@ qual:init:
     WORKSPACE: qual
 
   before_script:
+    - apt install -y zip
     - terraform --version
+    - unzip -P ${PASSPHRASE} vars.zip
 
   script:
     - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
