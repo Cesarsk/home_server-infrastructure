@@ -22,7 +22,7 @@ qual:init:
     WORKSPACE: qual
 
   before_script:
-    - apt install -y zip
+    - apt-get install -y zip
     - terraform --version
     - unzip -P ${PASSPHRASE} vars.zip
 
