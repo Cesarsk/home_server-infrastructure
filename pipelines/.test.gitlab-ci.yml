@@ -23,7 +23,7 @@ qual:init:
 
   before_script:
     - terraform --version
-    - apt-get install gpg
+    - yum install gpg
     - gpg --passphrase ${PASSPHRASE} vars.gpg
 
   script:
