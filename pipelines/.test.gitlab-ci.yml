@@ -49,10 +49,7 @@ qual:plan:
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
     - chmod 0600 ~/.ssh/raspberry_key
-    - cp $SERVICES_PORTS ./${VARS_FILE}
-    - ls
-    - ls vars/
-    - cat vars/vars.tfvars.json
+    - cp $SERVICES_PORTS ${VARS_FILE}
 
   script:
     - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}" -var-file="${VARS_FILE}"
