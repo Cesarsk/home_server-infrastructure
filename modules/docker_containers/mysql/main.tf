@@ -17,13 +17,14 @@ resource "docker_image" "mysql_image" {
 }
 
 # create db container
+
 resource "docker_container" "mysql" {
   #  name    = "${var.workspace}-mysql-${uuid()}"
   name    = "${var.workspace}-mysql"
   image   = docker_image.mysql_image.latest
   restart = "always"
-  #ports {
-  #  internal = var.mysql_internal_port_1
-  #  external = var.mysql_external_port_1
-  #}
+  ports {
+    internal = var.workspace == "qual" ? var.mysql_qual_internal_port_1 : var.mysql_prod_internal_port_1
+    external = var.workspace == "qual" ? var.mysql_qual_external_port_1 : var.mysql_prod_external_port_1
+  }
 }

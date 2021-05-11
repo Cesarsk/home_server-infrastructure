@@ -4,11 +4,13 @@ variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
   VARS_FILE: ./vars/vars.json
+  PORTS_FILE: ${SERVICES_PORTS}
 
 cache:
   key: ${WORKSPACE}
   paths:
     - ${TF_ROOT}/.terraform
+
 
 ##########################################################
 qual:init:
@@ -23,11 +25,9 @@ qual:init:
 
   before_script:
     - terraform --version
-    - yum install gpg
-    - gpg --passphrase ${PASSPHRASE} vars.gpg
 
   script:
-    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
+    - gitlab-terraform init -var-file=${VARS_FILE} -var-file=${PORTS_FILE} -var="workspace=${WORKSPACE}"
     - gitlab-terraform validate -json
 
 ###########################################################
@@ -51,7 +51,7 @@ qual:plan:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}" -var-file=${PORTS_FILE}
     - gitlab-terraform plan-json
 
   artifacts:
