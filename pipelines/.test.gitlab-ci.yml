@@ -26,7 +26,7 @@ qual:init:
     - terraform --version
 
   script:
-    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
+    - gitlab-terraform init -var-file="${VARS_FILE}" -var="workspace=${WORKSPACE}"
     - gitlab-terraform validate -json
 
 ###########################################################
@@ -50,7 +50,7 @@ qual:plan:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform plan -input=false -var-file=${SERVICES_PORTS} -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan -input=false -var-file="${SERVICES_PORTS}" -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
     - gitlab-terraform plan-json
 
   artifacts:
