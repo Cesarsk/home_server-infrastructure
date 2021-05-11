@@ -52,6 +52,7 @@ qual:plan:
     - cp $SERVICES_PORTS ./${VARS_FILE}
     - ls
     - ls vars/
+    - cat vars/vars.tfvars.json
 
   script:
     - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}" -var-file="${VARS_FILE}"
