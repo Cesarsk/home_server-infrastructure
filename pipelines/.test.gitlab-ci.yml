@@ -4,7 +4,6 @@ variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
   VARS_FILE: ./vars/vars.json
-  PORTS_FILE: ${SERVICES_PORTS}
 
 cache:
   key: ${WORKSPACE}
@@ -39,6 +38,7 @@ qual:plan:
 
   variables:
     WORKSPACE: qual
+    PORTS_FILE: ${SERVICES_PORTS}
 
   only:
     refs:
@@ -51,7 +51,7 @@ qual:plan:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan -input=false -var-file=${PORTS_FILE} -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
     - gitlab-terraform plan-json
 
   artifacts:
@@ -83,4 +83,4 @@ qual:apply:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform apply -var-file=${PORTS_FILE}
+    - gitlab-terraform apply
