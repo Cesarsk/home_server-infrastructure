@@ -13,10 +13,12 @@ provider "docker" {
 }
 
 module "mysql" {
-  source                = "./modules/docker_containers/mysql"
-  workspace             = var.workspace
-  mysql_external_port_1 = ""
-  mysql_internal_port_1 = ""
+  source                     = "./modules/docker_containers/mysql"
+  workspace                  = var.workspace
+  mysql_prod_external_port_1 = var.mysql_prod_external_port_1
+  mysql_prod_internal_port_1 = var.mysql_prod_internal_port_1
+  mysql_qual_external_port_1 = var.mysql_qual_external_port_1
+  mysql_qual_internal_port_1 = var.mysql_qual_internal_port_1
 }
 
 #module "portainer" {
