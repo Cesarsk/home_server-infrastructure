@@ -51,7 +51,7 @@ qual:plan:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}" -var-file=${PORTS_FILE}
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
     - gitlab-terraform plan-json
 
   artifacts:
@@ -83,4 +83,4 @@ qual:apply:
     - chmod 0600 ~/.ssh/raspberry_key
 
   script:
-    - gitlab-terraform apply
+    - gitlab-terraform apply -var-file=${PORTS_FILE}
