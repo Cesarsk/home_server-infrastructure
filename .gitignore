@@ -96,3 +96,4 @@ cython_debug/
 
 # Editor
 .idea
+.vars/vars.json

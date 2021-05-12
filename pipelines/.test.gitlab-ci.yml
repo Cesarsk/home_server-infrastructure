@@ -10,7 +10,8 @@ cache:
   paths:
     - ${TF_ROOT}/.terraform
 
-##########################################################
+
+###########################################################
 qual:init:
   stage: init
 
@@ -25,7 +26,7 @@ qual:init:
     - terraform --version
 
   script:
-    - gitlab-terraform init -var-file=${VARS_FILE} -var="workspace=${WORKSPACE}"
+    - gitlab-terraform init -var="workspace=${WORKSPACE}"
     - gitlab-terraform validate -json
 
 ###########################################################
@@ -43,14 +44,15 @@ qual:plan:
       - test
 
   before_script:
-    - terraform --version
     - mkdir ~/.ssh
+    - mkdir vars
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
     - chmod 0600 ~/.ssh/raspberry_key
+    - cp $SERVICES_PORTS ${VARS_FILE}
 
   script:
-    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}"
+    - gitlab-terraform plan -input=false -var="raspberry_host=$raspberry_host" -var="workspace=${WORKSPACE}" -var-file="${VARS_FILE}"
     - gitlab-terraform plan-json
 
   artifacts:
@@ -61,7 +63,7 @@ qual:plan:
     reports:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
-###########################################################
+########################################################
 qual:apply:
   stage: apply
 

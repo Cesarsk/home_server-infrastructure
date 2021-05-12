@@ -3,7 +3,6 @@ image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${WORKSPACE}
-  VARS_FILE: vars/vars.tfvars.json
 
 cache:
   key: ${WORKSPACE}
@@ -43,7 +42,7 @@ prod:plan:
       - main
 
   before_script:
-    - terraform --version
+    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
@@ -61,7 +60,7 @@ prod:plan:
     reports:
       terraform: ${TF_ROOT}/${WORKSPACE}/plan.json
 
-###########################################################
+######################################################
 prod:apply:
   stage: apply
 
@@ -78,6 +77,7 @@ prod:apply:
       - main
 
   before_script:
+    - cd modules
     - mkdir ~/.ssh
     - cp $raspberry_config ~/.ssh/config
     - cp $raspberry_key ~/.ssh/raspberry_key
