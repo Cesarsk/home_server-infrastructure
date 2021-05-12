@@ -12,8 +12,9 @@ data "docker_registry_image" "mysql_registry_image" {
 }
 
 resource "docker_image" "mysql_image" {
-  name         = data.docker_registry_image.mysql_registry_image.name
-  keep_locally = true
+  name          = data.docker_registry_image.mysql_registry_image.name
+  keep_locally  = true
+  pull_triggers = [data.docker_registry_image.mysql_registry_image.sha256_digest]
 }
 
 # create db container
