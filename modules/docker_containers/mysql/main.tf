@@ -24,7 +24,9 @@ resource "docker_container" "mysql" {
   image   = docker_image.mysql_image.latest
   restart = "always"
   ports {
-    internal = var.workspace == "qual" ? var.mysql_qual_internal_port_1 : var.mysql_prod_internal_port_1
-    external = var.workspace == "qual" ? var.mysql_qual_external_port_1 : var.mysql_prod_external_port_1
+    internal = var.mysql_qual_internal_port_1
+    external = var.mysql_qual_external_port_1
+    #internal = var.workspace == "qual" ? var.mysql_qual_internal_port_1 : var.mysql_prod_internal_port_1
+    #external = var.workspace == "qual" ? var.mysql_qual_external_port_1 : var.mysql_prod_external_port_1
   }
 }
