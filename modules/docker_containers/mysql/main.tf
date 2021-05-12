@@ -11,6 +11,14 @@ data "docker_registry_image" "mysql_registry_image" {
   name = "biarms/mysql:latest"
 }
 
+
+resource "docker_image" "mysql_image2" {
+  name          = data.docker_registry_image.mysql_registry_image.name
+  keep_locally  = true
+  pull_triggers = [data.docker_registry_image.mysql_registry_image.sha256_digest]
+  force_remove  = true
+}
+
 resource "docker_image" "mysql_image" {
   name          = data.docker_registry_image.mysql_registry_image.name
   keep_locally  = true
@@ -23,7 +31,7 @@ resource "docker_image" "mysql_image" {
 resource "docker_container" "mysql" {
   #  name    = "${var.workspace}-mysql-${uuid()}"
   name    = "${var.workspace}-mysql"
-  image   = docker_image.mysql_image.latest
+  image   = var.workspace == "qual" ? docker_image.mysql_image.latest : docker_image.mysql_image2.latest
   restart = "always"
   ports {
     internal = var.workspace == "qual" ? var.mysql_qual_internal_port_1 : var.mysql_prod_internal_port_1
